@@ -790,6 +790,47 @@ resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_3" {
   records = ["m6d3etxkxjut3c7bfl5bmzz5biqcjxhe.dkim.amazonses.com"]
 }
 
+# app.touchpoints.digital.gov (Production)
+resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "app.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov__acme-challenge_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.app.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_1" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_2" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
+}
+
 # Touchpoints Staging APP / Amazon SES Verification TXT Record
 resource "aws_route53_record" "touchpoints_staging_aws_ses" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
