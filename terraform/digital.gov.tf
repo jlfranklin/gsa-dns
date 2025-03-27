@@ -840,9 +840,9 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
 }
 
 # Mail records moved to mail subdomain
-resource "aws_route53_record" "touchpoints_digital_gov_mx" {
+resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.touchpoints.digital.gov."  # Changed to mail subdomain
+  name            = "mail.touchpoints.digital.gov."  # Mail subdomain for general email
   type            = "MX"
   ttl             = "600"
   allow_overwrite = true
@@ -950,9 +950,9 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
 
 # Touchpoints APP / MX Records
 # app.touchpoints.digital.gov
-resource "aws_route53_record" "touchpoints_digital_gov_mx" {
+resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "app.touchpoints.digital.gov."
+  name            = "app.touchpoints.digital.gov."  # App-specific email handling
   type            = "MX"
   ttl             = "600"
   allow_overwrite = true
