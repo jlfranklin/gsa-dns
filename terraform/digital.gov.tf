@@ -665,7 +665,7 @@ resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_3" {
 # demo.app.touchpoints.digital.gov
 resource "aws_route53_record" "demo_app_touchpoints_digital_gov_mx" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "demo-app.touchpoints.digital.gov."
+  name    = "mail.demo-app.touchpoints.digital.gov."
   type    = "MX"
   ttl     = "600"
   records = [
@@ -837,6 +837,22 @@ resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
   ttl             = 1800
   allow_overwrite = true  # Add this to handle conflicts
   records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
+}
+
+# Mail records moved to mail subdomain
+resource "aws_route53_record" "touchpoints_digital_gov_mx" {
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "mail.touchpoints.digital.gov."  # Changed to mail subdomain
+  type            = "MX"
+  ttl             = "600"
+  allow_overwrite = true
+  records         = [
+    "10 inbound-smtp.us-east-1.amazonaws.com"
+  ]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # Touchpoints Staging APP / Amazon SES Verification TXT Record
