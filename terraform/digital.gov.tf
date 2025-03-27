@@ -792,11 +792,16 @@ resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_3" {
 
 # app.touchpoints.digital.gov (Production)
 resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "app.touchpoints.digital.gov."
-  type    = "CNAME"
-  ttl     = 120
-  records = ["app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "app.touchpoints.digital.gov."
+  type            = "CNAME"
+  ttl             = 120
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_route53_record" "app_touchpoints_digital_gov__acme-challenge_cname" {
@@ -808,27 +813,30 @@ resource "aws_route53_record" "app_touchpoints_digital_gov__acme-challenge_cname
 }
 
 resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_1" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
+  type            = "CNAME"
+  ttl             = 1800
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
 }
 
 resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_2" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
+  type            = "CNAME"
+  ttl             = 1800
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
 }
 
 resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
+  type            = "CNAME"
+  ttl             = 1800
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
 }
 
 # Touchpoints Staging APP / Amazon SES Verification TXT Record
@@ -927,13 +935,18 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
 # Touchpoints APP / MX Records
 # app.touchpoints.digital.gov
 resource "aws_route53_record" "touchpoints_digital_gov_mx" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "app.touchpoints.digital.gov."
-  type    = "MX"
-  ttl     = "600"
-  records = [
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "app.touchpoints.digital.gov."
+  type            = "MX"
+  ttl             = "600"
+  allow_overwrite = true
+  records         = [
     "10 inbound-smtp.us-east-1.amazonaws.com"
   ]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
