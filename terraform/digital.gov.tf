@@ -791,7 +791,7 @@ resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_3" {
 }
 
 # Mail handling for app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
+resource "aws_route53_record" "app_touchpoints_digital_gov_smtp" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
   name            = "mail.app.touchpoints.digital.gov."  # Changed to mail subdomain
   type            = "MX"
