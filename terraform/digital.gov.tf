@@ -153,27 +153,27 @@ resource "aws_route53_record" "prod_cms_digital_gov_cname" {
   records = ["cms.digital.gov.external-domains-production.cloud.gov."]
 }
 
-# resource "aws_route53_record" "digital_gov_digital_gov_a" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "digital.gov."
-#   type    = "A"
-#   alias {
-#     name                   = ".cloudfront.net"                    ## Fill in when generated.
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
-#     evaluate_target_health = false
-#   }
-# }
+resource "aws_route53_record" "digital_gov_digital_gov_a" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "digital.gov."
+  type    = "A"
+  alias {
+    name                   = "d3arzeyfcjeh5j.cloudfront.net."
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
 
-# resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
-#   zone_id = aws_route53_zone.digital_toplevel.zone_id
-#   name    = "digital.gov."
-#   type    = "AAAA"
-#   alias {
-#     name                   = ".cloudfront.net"                    ## Fill in when generated.
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
-#     evaluate_target_health = false
-#   }
-# }
+resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "digital.gov."
+  type    = "AAAA"
+  alias {
+    name                   = "d3arzeyfcjeh5j.cloudfront.net."
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
 
 # resource "aws_route53_record" "www_digital_gov_digital_gov_cname" {
 #   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -181,7 +181,7 @@ resource "aws_route53_record" "prod_cms_digital_gov_cname" {
 #   type    = "CNAME"
 #   ttl     = 120
 #   records = ["digital.gov."]
-#   }
+# }
 
 ##
 ##       _ _____           _         _   _         
@@ -295,31 +295,35 @@ resource "aws_route53_record" "prod_cms_digital_gov_cname" {
 ##                           |_|            
 ##  
 
-resource "aws_route53_record" "digital_gov_apex" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "digital.gov."
-  type    = "A"
+##
+## OLD PAGES RECORDS
+##
 
-  alias {
-    name                   = "d2q1i25any8vwy.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
+# resource "aws_route53_record" "digital_gov_apex" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "digital.gov."
+#   type    = "A"
 
-resource "aws_route53_record" "digital_gov_apex_aaaa" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "digital.gov."
-  type    = "AAAA"
+#   alias {
+#     name                   = "d2q1i25any8vwy.cloudfront.net."
+#     zone_id                = local.cloud_gov_cloudfront_zone_id
+#     evaluate_target_health = false
+#   }
+# }
 
-  alias {
-    name                   = "d2q1i25any8vwy.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
+# resource "aws_route53_record" "digital_gov_apex_aaaa" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "digital.gov."
+#   type    = "AAAA"
 
-# www.digital.gov — redirects to digital.gov through pages_redirect
+#   alias {
+#     name                   = "d2q1i25any8vwy.cloudfront.net."
+#     zone_id                = local.cloud_gov_cloudfront_zone_id
+#     evaluate_target_health = false
+#   }
+# }
+
+# # www.digital.gov — redirects to digital.gov through pages_redirect
 resource "aws_route53_record" "digital_gov_www" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "www.digital.gov."
@@ -343,6 +347,8 @@ resource "aws_route53_record" "digital_gov_www_aaaa" {
     evaluate_target_health = false
   }
 }
+
+
 
 # workflow.digitalgov.gov
 # redirects to digital.gov/workflow
