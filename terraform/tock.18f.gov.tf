@@ -1,3 +1,4 @@
+/*
 resource "aws_route53_record" "tock_18f_gov_acmechallenge" {
   zone_id = aws_route53_zone.d_18f_gov_zone.zone_id
   name    = "_acme-challenge.tock.18f.gov."
@@ -14,3 +15,6 @@ resource "aws_route53_record" "d_18f_gov_tock_18f_gov_cname" {
   ttl     = 300
   records = ["production-domains-1-884689640.us-gov-west-1.elb.amazonaws.com."]
 }
+*/
+
+// Commented out to maintain compatibility with commented out 18f.gov.tf zone definition
