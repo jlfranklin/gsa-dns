@@ -667,18 +667,6 @@ resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_3" {
   records = ["frvj7kknqxwqaoypz5w5l54yirxtqeue.dkim.amazonses.com"]
 }
 
-# DEMO Touchpoints APP / MX Records
-# demo.app.touchpoints.digital.gov
-resource "aws_route53_record" "demo_app_touchpoints_digital_gov_mx" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "mail.demo-app.touchpoints.digital.gov."
-  type    = "MX"
-  ttl     = "600"
-  records = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-}
-
 # Touchpoints Site / Federalist / touchpoints.digital.gov — A
 resource "aws_route53_record" "touchpoints_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -796,23 +784,7 @@ resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_3" {
   records = ["m6d3etxkxjut3c7bfl5bmzz5biqcjxhe.dkim.amazonses.com"]
 }
 
-# Mail handling for app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_smtp" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "mail.app.touchpoints.digital.gov."  # Changed to mail subdomain
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records         = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-# Application endpoint for app.touchpoints.digital.gov
+# Application endpoint for app.touchpoints.digital.gov - keep this as is
 resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
   zone_id         = aws_route53_zone.digital_toplevel.zone_id
   name            = "app.touchpoints.digital.gov."
