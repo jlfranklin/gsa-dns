@@ -78,6 +78,14 @@ resource "aws_route53_record" "acme_challenge_ce_permitting_innovation_gov_cname
   records = ["_acme-challenge.ce.permitting.innovation.gov.external-domains-production.cloud.gov."]
 }
 
+resource "aws_route53_record" "ce_permitting_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "ce.permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["ce.permitting.innovation.gov.external-domains-production.cloud.gov."]
+}
+
 module "innovation_gov__email_security" {
   source  = "./email_security"
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
