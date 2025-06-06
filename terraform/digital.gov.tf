@@ -929,23 +929,7 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
   records = ["anyljchthsaitorr6matbfeoeyug34jh.dkim.amazonses.com"]
 }
 
-# Touchpoints APP / MX Records
-# app.touchpoints.digital.gov
-resource "aws_route53_record" "app_touchpoints_digital_gov_mx" {
-  zone_id         = aws_route53_zone.digital_toplevel.zone_id
-  name            = "app.touchpoints.digital.gov."  # App-specific email handling
-  type            = "MX"
-  ttl             = "600"
-  allow_overwrite = true
-  records         = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
+# Touchpoints MX Records
 resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "mail.touchpoints.digital.gov"
@@ -975,15 +959,6 @@ module "digital_gov__email_security" {
     local.spf_hubspot
   ]
 }
-
-# pra.digital.gov TXT / ACME Challenge
-#resource "aws_route53_record" "pra_digital_gov__acme-challenge_txt" {
-#  zone_id = aws_route53_zone.digital_toplevel.zone_id
-#  name    = "_acme-challenge.pra.digital.gov."
-#  type    = "TXT"
-#  ttl     = 120
-#  records = ["0VxlpUbA2CXBDx1GKUlr-SujwU0ep9KvGrM0BvE6o4E"]
-#}
 
 # demo.touchpoints.digital.gov TXT / ACME Challenge
 resource "aws_route53_record" "demo_touchpoints_digital_gov__acme-challenge_txt" {
