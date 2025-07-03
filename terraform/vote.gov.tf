@@ -14,10 +14,6 @@ resource "aws_route53_record" "vote_gov_cert_validation_txt" {
   records = ["_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow"]
 }
 
-output "vote_gov_ns" {
-  value = aws_route53_zone.vote_gov_zone.name_servers
-}
-
 #
 #   ___ _ __ ___  ___ 
 #  / __| '_ ` _ \/ __|
