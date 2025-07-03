@@ -1,6 +1,5 @@
 resource "aws_route53_zone" "vote_gov_zone" {
-  name = "vote.gov"
-  
+  name = "vote.gov."
   tags = {
     Project = "dns"
   }
@@ -240,22 +239,17 @@ resource "aws_route53_record" "search_vote_gov_cname" {
   name    = "search.vote.gov."
   type    = "CNAME"
   ttl     = 120
-  records = ["vote-en.sites.infr.search.usa.gov."]on_txt" {
-} zone_id = aws_route53_zone.vote_gov_zone.zone_id
-  name    = "_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow.vote.gov"
+  records = ["vote-en.sites.infr.search.usa.gov."]
+}
 
+module "vote_gov__email_security" {
+  source = "./email_security"
 
-
-
-
-
-
-
-
-
-}  ]    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0"    local.spf_no_mail,  txt_records = [  zone_id = aws_route53_zone.vote_gov_zone.zone_id  source = "./email_security"module "vote_gov__email_security" {  type    = "TXT"
-  ttl     = 300
-  records = ["_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow"]
+  zone_id = aws_route53_zone.vote_gov_zone.zone_id
+  txt_records = [
+    local.spf_no_mail,
+    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0"
+  ]
 }
 
 output "vote_gov_ns" {
