@@ -1,8 +1,22 @@
 resource "aws_route53_zone" "vote_gov_zone" {
-  name = "vote.gov."
+  name = "vote.gov"
+  
   tags = {
     Project = "dns"
   }
+}
+
+# TXT record for TLS certificate validation
+resource "aws_route53_record" "vote_gov_cert_validation_txt" {
+  zone_id = aws_route53_zone.vote_gov_zone.zone_id
+  name    = "_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow.vote.gov"
+  type    = "TXT"
+  ttl     = 300
+  records = ["_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow"]
+}
+
+output "vote_gov_ns" {
+  value = aws_route53_zone.vote_gov_zone.name_servers
 }
 
 #
@@ -226,17 +240,22 @@ resource "aws_route53_record" "search_vote_gov_cname" {
   name    = "search.vote.gov."
   type    = "CNAME"
   ttl     = 120
-  records = ["vote-en.sites.infr.search.usa.gov."]
-}
+  records = ["vote-en.sites.infr.search.usa.gov."]on_txt" {
+} zone_id = aws_route53_zone.vote_gov_zone.zone_id
+  name    = "_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow.vote.gov"
 
-module "vote_gov__email_security" {
-  source = "./email_security"
 
-  zone_id = aws_route53_zone.vote_gov_zone.zone_id
-  txt_records = [
-    local.spf_no_mail,
-    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0"
-  ]
+
+
+
+
+
+
+
+
+}  ]    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0"    local.spf_no_mail,  txt_records = [  zone_id = aws_route53_zone.vote_gov_zone.zone_id  source = "./email_security"module "vote_gov__email_security" {  type    = "TXT"
+  ttl     = 300
+  records = ["_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow"]
 }
 
 output "vote_gov_ns" {
