@@ -235,7 +235,8 @@ module "vote_gov__email_security" {
   zone_id = aws_route53_zone.vote_gov_zone.zone_id
   txt_records = [
     local.spf_no_mail,
-    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0"
+    "blitz=mu-cbb11232-c5e05a4b-b13f3a3c-060b48f0",
+    "_lj5k6ti00q8xlft4lrtu0gjyzhvm5ow"
   ]
 }
 
