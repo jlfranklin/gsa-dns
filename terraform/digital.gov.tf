@@ -13,19 +13,19 @@ resource "aws_route53_zone" "digital_toplevel" {
 }
 
 ##
-##   _____  _   _  _____ _____ ______ _____ 
+##   _____  _   _  _____ _____ ______ _____
 ##  |  __ \| \ | |/ ____/ ____|  ____/ ____|
-##  | |  | |  \| | (___| (___ | |__ | |     
-##  | |  | | . ` |\___ \\___ \|  __|| |     
-##  | |__| | |\  |____) |___) | |___| |____ 
+##  | |  | |  \| | (___| (___ | |__ | |
+##  | |  | | . ` |\___ \\___ \|  __|| |
+##  | |__| | |\  |____) |___) | |___| |____
 ##  |_____/|_| \_|_____/_____/|______\_____|
 ##
 
 # Create a KMS key for DNSSEC signing
-#checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53                         
+#checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
 resource "aws_kms_key" "digital_gov_dnssec_zone" {
 
-  # See Route53 key requirements here: 
+  # See Route53 key requirements here:
   # https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec-cmk-requirements.html
   customer_master_key_spec = "ECC_NIST_P256"
   deletion_window_in_days  = 7
@@ -94,29 +94,29 @@ resource "aws_route53_hosted_zone_dnssec" "digital_gov_dnssec_zone" {
 }
 
 ##
-##       _______  _   _  _____ _____ ______ _____ 
+##       _______  _   _  _____ _____ ______ _____
 ##      / /  __ \| \ | |/ ____/ ____|  ____/ ____|
-##     / /| |  | |  \| | (___| (___ | |__ | |     
-##    / / | |  | | . ` |\___ \\___ \|  __|| |     
-##   / /  | |__| | |\  |____) |___) | |___| |____ 
+##     / /| |  | |  \| | (___| (___ | |__ | |
+##    / / | |  | | . ` |\___ \\___ \|  __|| |
+##   / /  | |__| | |\  |____) |___) | |___| |____
 ##  /_/   |_____/|_| \_|_____/_____/|______\_____|
 ##
 
 
 ##
-##  _____                         _ 
+##  _____                         _
 ##  |  __ \                       | |
 ##  | |  | |_ __ _   _ _ __   __ _| |
 ##  | |  | | '__| | | | '_ \ / _` | |
 ##  | |__| | |  | |_| | |_) | (_| | |
 ##  |_____/|_|   \__,_| .__/ \__,_|_|
-##                    | |            
-##                    |_|            
+##                    | |
+##                    |_|
 ##
 
 ##
-##     _____           _         _   _         
-##    |  _  |___ ___ _| |_ _ ___| |_|_|___ ___ 
+##     _____           _         _   _
+##    |  _  |___ ___ _| |_ _ ___| |_|_|___ ___
 ##    |   __|  _| . | . | | |  _|  _| | . |   |
 ##    |__|  |_| |___|___|___|___|_| |_|___|_|_|
 ##
@@ -184,17 +184,17 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
 # }
 
 ##
-##       _ _____           _         _   _         
-##      / |  _  |___ ___ _| |_ _ ___| |_|_|___ ___ 
+##       _ _____           _         _   _
+##      / |  _  |___ ___ _| |_ _ ___| |_|_|___ ___
 ##     / /|   __|  _| . | . | | |  _|  _| | . |   |
 ##    |_/ |__|  |_| |___|___|___|___|_| |_|___|_|_|
 ##
 
 ##
-##     ____          
-##    |    \ ___ _ _ 
+##     ____
+##    |    \ ___ _ _
 ##    |  |  | -_| | |
-##    |____/|___|\_/ 
+##    |____/|___|\_/
 ##
 
 # resource "aws_route53_record" "dev__acme_challenge_cms-dev_digital_gov_cname" {
@@ -230,15 +230,15 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
 # }
 
 ##
-##       _ ____          
-##      / |    \ ___ _ _ 
+##       _ ____
+##      / |    \ ___ _ _
 ##     / /|  |  | -_| | |
-##    |_/ |____/|___|\_/ 
+##    |_/ |____/|___|\_/
 ##
 
 ##
-##     _____ _           _         
-##    |   __| |_ ___ ___|_|___ ___ 
+##     _____ _           _
+##    |   __| |_ ___ ___|_|___ ___
 ##    |__   |  _| .'| . | |   | . |
 ##    |_____|_| |__,|_  |_|_|_|_  |
 ##                  |___|     |___|
@@ -277,23 +277,23 @@ resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
 # }
 
 ##
-##       _ _____ _           _         
-##      / |   __| |_ ___ ___|_|___ ___ 
+##       _ _____ _           _
+##      / |   __| |_ ___ ___|_|___ ___
 ##     / /|__   |  _| .'| . | |   | . |
 ##    |_/ |_____|_| |__,|_  |_|_|_|_  |
 ##                      |___|     |___|
 ##
 
-##  
-##       _______                         _ 
+##
+##       _______                         _
 ##      / /  __ \                       | |
 ##     / /| |  | |_ __ _   _ _ __   __ _| |
 ##    / / | |  | | '__| | | | '_ \ / _` | |
 ##   / /  | |__| | |  | |_| | |_) | (_| | |
 ##  /_/   |_____/|_|   \__,_| .__/ \__,_|_|
-##                           | |            
-##                           |_|            
-##  
+##                           | |
+##                           |_|
+##
 
 ##
 ## OLD PAGES RECORDS
@@ -366,6 +366,7 @@ resource "aws_route53_record" "digital_gov_www_aaaa" {
 # USWDS - U.S. Web Design System -------------------------------
 # designsystem.digital.gov — A
 # (Master site in Federalist)
+## TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "designsystem_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "designsystem.digital.gov."
@@ -379,6 +380,7 @@ resource "aws_route53_record" "designsystem_digital_gov_a" {
 
 # designsystem.digital.gov — AAAA
 # (Master site in Federalist)
+## TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "designsystem_digital_gov_aaaa" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "designsystem.digital.gov."
@@ -388,6 +390,25 @@ resource "aws_route53_record" "designsystem_digital_gov_aaaa" {
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
+}
+
+# designsystem.digital.gov — CNAME -------------------------------
+# (Setup for migrating to the new cloud.gov CDN service)
+resource "aws_route53_record" "designsystem_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "designsystem.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["designsystem.digital.gov.external-domains-production.cloud.gov."]
+}
+
+# designsystem.digital.gov acme challenge — CNAME -------------------------------
+resource "aws_route53_record" "acme_challenge_designsystem_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.designsystem.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
 # v2.designsystem.digital.gov — CNAME -------------------------------
@@ -410,7 +431,7 @@ resource "aws_route53_record" "acme_challenge_v2_designsystem_digital_gov_cname"
 }
 
 # v1.designsystem.digital.gov — A -------------------------------
-# (DEMO site in Federalist)
+# TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "v1_designsystem_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v1.designsystem.digital.gov."
@@ -422,6 +443,7 @@ resource "aws_route53_record" "v1_designsystem_digital_gov_a" {
   }
 }
 
+# TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v1.designsystem.digital.gov."
@@ -431,6 +453,22 @@ resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
+}
+
+resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "v1.designsystem.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.v1.designsystem.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
 
