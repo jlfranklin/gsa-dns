@@ -1,5 +1,5 @@
 # Create a KMS key for DNSSEC signing
-# checkov:skip=CKV_AWS_33: Wildcard principal required for KMS key management by account administrators for DNSSEC operations
+#checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
 resource "aws_kms_key" "dnssec_kms_key" {
 
   # See Route53 key requirements here:
