@@ -80,7 +80,7 @@ resource "aws_route53_record" "example_com_host_domain_com_a" {
 
 # Enable DNSSEC
 
-module "exmaple_com_dnssec" {
+module "example_com_dnssec" {
   source = "./dnssec"
   zone = aws_route53_zone.example_com_zone
 }
