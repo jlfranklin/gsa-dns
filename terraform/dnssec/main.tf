@@ -1,5 +1,4 @@
 # Create a KMS key for DNSSEC signing
-#checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
 resource "aws_kms_key" "dnssec_kms_key" {
 
   # See Route53 key requirements here:
@@ -40,6 +39,7 @@ resource "aws_kms_key" "dnssec_kms_key" {
         Action = "kms:*"
         Effect = "Allow"
         Principal = {
+          # checkov:skip=CKV_AWS_33: "Ensure KMS key policy does not contain wildcard (*) principal"
           AWS = "*"
         }
         Resource = "*"
