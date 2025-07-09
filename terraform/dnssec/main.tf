@@ -3,6 +3,7 @@ resource "aws_kms_key" "dnssec_kms_key" {
 
   # See Route53 key requirements here:
   # https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec-cmk-requirements.html
+  # CKV_AWS_33: Wildcard principal required for KMS key management by account administrators for DNSSEC operations
   customer_master_key_spec = "ECC_NIST_P256"
   deletion_window_in_days  = 7
   key_usage                = "SIGN_VERIFY"
