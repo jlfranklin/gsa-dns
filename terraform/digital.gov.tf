@@ -12,96 +12,15 @@ resource "aws_route53_zone" "digital_toplevel" {
   }
 }
 
-##
-##   _____  _   _  _____ _____ ______ _____
-##  |  __ \| \ | |/ ____/ ____|  ____/ ____|
-##  | |  | |  \| | (___| (___ | |__ | |
-##  | |  | | . ` |\___ \\___ \|  __|| |
-##  | |__| | |\  |____) |___) | |___| |____
-##  |_____/|_| \_|_____/_____/|______\_____|
-##
-
-# Create a KMS key for DNSSEC signing
-#checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
-resource "aws_kms_key" "digital_gov_dnssec_zone" {
-
-  # See Route53 key requirements here:
-  # https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec-cmk-requirements.html
-  customer_master_key_spec = "ECC_NIST_P256"
-  deletion_window_in_days  = 7
-  key_usage                = "SIGN_VERIFY"
-  policy = jsonencode({
-    Statement = [
-      {
-        Action = [
-          "kms:DescribeKey",
-          "kms:GetPublicKey",
-          "kms:Sign",
-        ],
-        Effect = "Allow"
-        Principal = {
-          Service = "dnssec-route53.amazonaws.com"
-        }
-        Sid      = "Allow Route 53 DNSSEC Service",
-        Resource = "*"
-      },
-      {
-        Action = "kms:CreateGrant",
-        Effect = "Allow"
-        Principal = {
-          Service = "dnssec-route53.amazonaws.com"
-        }
-        Sid      = "Allow Route 53 DNSSEC Service to CreateGrant",
-        Resource = "*"
-        Condition = {
-          Bool = {
-            "kms:GrantIsForAWSResource" = "true"
-          }
-        }
-      },
-      {
-        Action = "kms:*"
-        Effect = "Allow"
-        Principal = {
-          # checkov:skip=CKV_AWS_33: "Ensure KMS key policy does not contain wildcard (*) principal"
-          AWS = "*"
-        }
-        Resource = "*"
-        Sid      = "IAM User Permissions"
-      },
-    ]
-    Version = "2012-10-17"
-  })
+# Enable DNSSEC for digital.gov.
+module "digital_gov_dnssec" {
+  source = "./dnssec"
+  zone = aws_route53_zone.digital_toplevel
 }
 
-# Make it easier for admins to identify the key in the KMS console
-resource "aws_kms_alias" "digital_gov_dnssec_zone" {
-  name          = "alias/DNSSEC-${replace(aws_route53_zone.digital_toplevel.name, "/[^a-zA-Z0-9:/_-]/", "-")}"
-  target_key_id = aws_kms_key.digital_gov_dnssec_zone.key_id
+output "digital_gov_ds" {
+  value = module.digital_gov_dnssec.ds_record
 }
-
-resource "aws_route53_key_signing_key" "digital_gov_dnssec_zone" {
-  hosted_zone_id             = aws_route53_zone.digital_toplevel.id
-  key_management_service_arn = aws_kms_key.digital_gov_dnssec_zone.arn
-  name                       = "digital.gov"
-}
-
-resource "aws_route53_hosted_zone_dnssec" "digital_gov_dnssec_zone" {
-  depends_on = [
-    aws_route53_key_signing_key.digital_gov_dnssec_zone
-  ]
-  hosted_zone_id = aws_route53_key_signing_key.digital_gov_dnssec_zone.hosted_zone_id
-}
-
-##
-##       _______  _   _  _____ _____ ______ _____
-##      / /  __ \| \ | |/ ____/ ____|  ____/ ____|
-##     / /| |  | |  \| | (___| (___ | |__ | |
-##    / / | |  | | . ` |\___ \\___ \|  __|| |
-##   / /  | |__| | |\  |____) |___) | |___| |____
-##  /_/   |_____/|_| \_|_____/_____/|______\_____|
-##
-
 
 ##
 ##  _____                         _
