@@ -241,6 +241,10 @@ resource "aws_route53_record" "vote_gov_caa" {
     ]
 }
 
+# CAA records for subdomains (cannot add for search.vote.gov due to existing CNAME)
+# Note: search.vote.gov has a CNAME record, so CAA record would conflict
+# CAA inheritance from parent domain (vote.gov) will apply to search.vote.gov
+
 module "vote_gov__email_security" {
   source = "./email_security"
 
