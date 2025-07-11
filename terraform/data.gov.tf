@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_route53_zone" "datagov_zone" {
 
   name = "data.gov"
@@ -7,6 +9,7 @@ resource "aws_route53_zone" "datagov_zone" {
 }
 
 # Create a KMS key for DNSSEC signing
+#checkov:skip=CKV_AWS_33:Required for DNSSEC configuration with Route53
 resource "aws_kms_key" "datagov_zone" {
 
   # See Route53 key requirements here: 
@@ -47,6 +50,7 @@ resource "aws_kms_key" "datagov_zone" {
         Action = "kms:*"
         Effect = "Allow"
         Principal = {
+          # checkov:skip=CKV_AWS_33: "Ensure KMS key policy does not contain wildcard (*) principal"
           AWS = "*"
         }
         Resource = "*"
@@ -363,29 +367,6 @@ resource "aws_route53_record" "datagov_resourcesstagingd13l8e1a7ekkcacloudfrontn
 
 }
 
-
-resource "aws_route53_record" "datagov_sdgd1z5ray7fqefkvcloudfrontnet_cname" {
-  zone_id = aws_route53_zone.datagov_zone.zone_id
-  name    = "sdg"
-  type    = "CNAME"
-
-  ttl     = 300
-  records = ["sdg.data.gov.external-domains-production.cloud.gov."]
-
-}
-
-
-resource "aws_route53_record" "datagov_sdgstagingdhrxft6loyu0ncloudfrontnet_cname" {
-  zone_id = aws_route53_zone.datagov_zone.zone_id
-  name    = "sdg-staging"
-  type    = "CNAME"
-
-  ttl     = 300
-  records = ["sdg-staging.data.gov.external-domains-production.cloud.gov."]
-
-}
-
-
 resource "aws_route53_record" "datagov_strategyd3mxkpq217356pcloudfrontnet_cname" {
   zone_id = aws_route53_zone.datagov_zone.zone_id
   name    = "strategy"
@@ -547,29 +528,6 @@ resource "aws_route53_record" "datagov_acmechallengeresourcesstagingCTRQ5trgMF0K
   records = ["CTR-Q5trgMF0KKgUZk14YJSRlGD36BWeQENmK8XAWk8"]
 
 }
-
-
-resource "aws_route53_record" "datagov_acmechallengesdg1cEge5zwHmYap2xfUTEKrx6YWJuN28yJrJAyQMysXc_txt" {
-  zone_id = aws_route53_zone.datagov_zone.zone_id
-  name    = "_acme-challenge.sdg"
-  type    = "CNAME"
-
-  ttl     = 300
-  records = ["_acme-challenge.sdg.data.gov.external-domains-production.cloud.gov."]
-
-}
-
-
-resource "aws_route53_record" "datagov_acmechallengesdgstagingbNsofNEUeS3uTsLwl9lXkt5OYOVzcE4WXv7LKQGCLQ_txt" {
-  zone_id = aws_route53_zone.datagov_zone.zone_id
-  name    = "_acme-challenge.sdg-staging"
-  type    = "CNAME"
-
-  ttl     = 300
-  records = ["_acme-challenge.sdg-staging.data.gov.external-domains-production.cloud.gov."]
-
-}
-
 
 resource "aws_route53_record" "datagov_acmechallengestrategyHjy5O04QmUqj4qgVY4jRisqf9oMl3G3z0pRo4Irlcg_txt" {
   zone_id = aws_route53_zone.datagov_zone.zone_id

@@ -54,28 +54,36 @@ resource "aws_route53_record" "innovation_gov_www_aaaa" {
   }
 }
 
-resource "aws_route53_record" "demo_innovation_gov_a" {
+resource "aws_route53_record" "acme_challenge_permitting_innovation_gov_cname" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
-  name    = "demo.innovation.gov."
-  type    = "A"
-
-  alias {
-    name                   = "d3am9l7wwd0yie.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+  name    = "_acme-challenge.permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.permitting.innovation.gov.external-domains-production.cloud.gov."]
 }
 
-resource "aws_route53_record" "demo_innovation_gov_aaaa" {
+resource "aws_route53_record" "permitting_innovation_gov_cname" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
-  name    = "demo.innovation.gov."
-  type    = "AAAA"
+  name    = "permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["permitting.innovation.gov.external-domains-production.cloud.gov."]
+}
 
-  alias {
-    name                   = "d3am9l7wwd0yie.cloudfront.net."
-    zone_id                = local.cloud_gov_cloudfront_zone_id
-    evaluate_target_health = false
-  }
+resource "aws_route53_record" "acme_challenge_ce_permitting_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "_acme-challenge.ce.permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["_acme-challenge.ce.permitting.innovation.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "ce_permitting_innovation_gov_cname" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "ce.permitting.innovation.gov."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["ce.permitting.innovation.gov.external-domains-production.cloud.gov."]
 }
 
 module "innovation_gov__email_security" {

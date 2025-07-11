@@ -12,31 +12,237 @@ resource "aws_route53_zone" "digital_toplevel" {
   }
 }
 
-resource "aws_route53_record" "digital_gov_apex" {
+# Enable DNSSEC for digital.gov.
+module "digital_gov_dnssec" {
+  source = "./dnssec"
+  zone = aws_route53_zone.digital_toplevel
+}
+
+output "digital_gov_ds" {
+  value = module.digital_gov_dnssec.ds_record
+}
+
+##
+##  _____                         _
+##  |  __ \                       | |
+##  | |  | |_ __ _   _ _ __   __ _| |
+##  | |  | | '__| | | | '_ \ / _` | |
+##  | |__| | |  | |_| | |_) | (_| | |
+##  |_____/|_|   \__,_| .__/ \__,_|_|
+##                    | |
+##                    |_|
+##
+
+##
+##     _____           _         _   _
+##    |  _  |___ ___ _| |_ _ ___| |_|_|___ ___
+##    |   __|  _| . | . | | |  _|  _| | . |   |
+##    |__|  |_| |___|___|___|___|_| |_|___|_|_|
+##
+
+resource "aws_route53_record" "prod__acme_challenge_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "prod__acme_challenge_www_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.www.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.www.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "prod__acme_challenge_cms_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.cms.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.cms.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "prod_cms_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "cms.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["cms.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "digital_gov_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "digital.gov."
   type    = "A"
-
   alias {
-    name                   = "d2q1i25any8vwy.cloudfront.net."
+    name                   = "d3arzeyfcjeh5j.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
 }
 
-resource "aws_route53_record" "digital_gov_apex_aaaa" {
+resource "aws_route53_record" "digital_gov_digital_gov_aaaa" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "digital.gov."
   type    = "AAAA"
-
   alias {
-    name                   = "d2q1i25any8vwy.cloudfront.net."
+    name                   = "d3arzeyfcjeh5j.cloudfront.net."
     zone_id                = local.cloud_gov_cloudfront_zone_id
     evaluate_target_health = false
   }
 }
 
-# www.digital.gov — redirects to digital.gov through pages_redirect
+# resource "aws_route53_record" "www_digital_gov_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "www.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["digital.gov."]
+# }
+
+##
+##       _ _____           _         _   _
+##      / |  _  |___ ___ _| |_ _ ___| |_|_|___ ___
+##     / /|   __|  _| . | . | | |  _|  _| | . |   |
+##    |_/ |__|  |_| |___|___|___|___|_| |_|___|_|_|
+##
+
+##
+##     ____
+##    |    \ ___ _ _
+##    |  |  | -_| | |
+##    |____/|___|\_/
+##
+
+# resource "aws_route53_record" "dev__acme_challenge_cms-dev_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "_acme-challenge.cms-dev.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["_acme-challenge.cms-dev.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# resource "aws_route53_record" "dev__acme_challenge_static-dev_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "_acme-challenge.static-dev.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["_acme-challenge.static-dev.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# resource "aws_route53_record" "dev_cms-dev_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "cms-dev.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["cms-dev.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# resource "aws_route53_record" "dev_static-dev_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "static-dev.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["static-dev.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+##
+##       _ ____
+##      / |    \ ___ _ _
+##     / /|  |  | -_| | |
+##    |_/ |____/|___|\_/
+##
+
+##
+##     _____ _           _
+##    |   __| |_ ___ ___|_|___ ___
+##    |__   |  _| .'| . | |   | . |
+##    |_____|_| |__,|_  |_|_|_|_  |
+##                  |___|     |___|
+##
+
+# resource "aws_route53_record" "staging__acme_challenge_cms-staging_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "_acme-challenge.cms-staging.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["_acme-challenge.cms-staging.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# resource "aws_route53_record" "staging__acme_challenge_static-staging_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "_acme-challenge.static-staging.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["_acme-challenge.static-staging.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# resource "aws_route53_record" "staging_cms-staging_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "cms-staging.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["cms-staging.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# resource "aws_route53_record" "staging_static-staging_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "static-staging.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["static-staging.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+##
+##       _ _____ _           _
+##      / |   __| |_ ___ ___|_|___ ___
+##     / /|__   |  _| .'| . | |   | . |
+##    |_/ |_____|_| |__,|_  |_|_|_|_  |
+##                      |___|     |___|
+##
+
+##
+##       _______                         _
+##      / /  __ \                       | |
+##     / /| |  | |_ __ _   _ _ __   __ _| |
+##    / / | |  | | '__| | | | '_ \ / _` | |
+##   / /  | |__| | |  | |_| | |_) | (_| | |
+##  /_/   |_____/|_|   \__,_| .__/ \__,_|_|
+##                           | |
+##                           |_|
+##
+
+##
+## OLD PAGES RECORDS
+##
+
+# resource "aws_route53_record" "digital_gov_apex" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "digital.gov."
+#   type    = "A"
+
+#   alias {
+#     name                   = "d2q1i25any8vwy.cloudfront.net."
+#     zone_id                = local.cloud_gov_cloudfront_zone_id
+#     evaluate_target_health = false
+#   }
+# }
+
+# resource "aws_route53_record" "digital_gov_apex_aaaa" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "digital.gov."
+#   type    = "AAAA"
+
+#   alias {
+#     name                   = "d2q1i25any8vwy.cloudfront.net."
+#     zone_id                = local.cloud_gov_cloudfront_zone_id
+#     evaluate_target_health = false
+#   }
+# }
+
+# # www.digital.gov — redirects to digital.gov through pages_redirect
 resource "aws_route53_record" "digital_gov_www" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "www.digital.gov."
@@ -61,6 +267,8 @@ resource "aws_route53_record" "digital_gov_www_aaaa" {
   }
 }
 
+
+
 # workflow.digitalgov.gov
 # redirects to digital.gov/workflow
 #module "digital_gov__workflow_digital_gov_redirect" {
@@ -77,6 +285,7 @@ resource "aws_route53_record" "digital_gov_www_aaaa" {
 # USWDS - U.S. Web Design System -------------------------------
 # designsystem.digital.gov — A
 # (Master site in Federalist)
+## TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "designsystem_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "designsystem.digital.gov."
@@ -90,6 +299,7 @@ resource "aws_route53_record" "designsystem_digital_gov_a" {
 
 # designsystem.digital.gov — AAAA
 # (Master site in Federalist)
+## TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "designsystem_digital_gov_aaaa" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "designsystem.digital.gov."
@@ -101,8 +311,28 @@ resource "aws_route53_record" "designsystem_digital_gov_aaaa" {
   }
 }
 
+# designsystem.digital.gov — CNAME -------------------------------
+# (Setup for migrating to the new cloud.gov CDN service)
+# TODO: Uncomment this once we've migrated to the new cloud.gov CDN service
+# resource "aws_route53_record" "designsystem_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "designsystem.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["designsystem.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+# designsystem.digital.gov acme challenge — CNAME -------------------------------
+resource "aws_route53_record" "acme_challenge_designsystem_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.designsystem.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.designsystem.digital.gov.external-domains-production.cloud.gov."]
+}
+
 # v2.designsystem.digital.gov — CNAME -------------------------------
-# (Redirects to designsystem.digital.gov via "pages redirect")
+# (Redirects to designsystem.digital.gov via WAF)
 resource "aws_route53_record" "v2_designsystem_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v2.designsystem.digital.gov."
@@ -121,7 +351,7 @@ resource "aws_route53_record" "acme_challenge_v2_designsystem_digital_gov_cname"
 }
 
 # v1.designsystem.digital.gov — A -------------------------------
-# (DEMO site in Federalist)
+# TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "v1_designsystem_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v1.designsystem.digital.gov."
@@ -133,6 +363,7 @@ resource "aws_route53_record" "v1_designsystem_digital_gov_a" {
   }
 }
 
+# TODO: Remove this once we've migrated to the new cloud.gov CDN service
 resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "v1.designsystem.digital.gov."
@@ -144,23 +375,24 @@ resource "aws_route53_record" "v1_designsystem_digital_gov_aaaa" {
   }
 }
 
-# components.designsystem.digital.gov — CNAME -------------------------------
-resource "aws_route53_record" "components_designsystem_digital_gov_cname" {
+# TODO: Uncomment this once we've migrated to the new cloud.gov CDN service
+# resource "aws_route53_record" "v1_designsystem_digital_gov_cname" {
+#   zone_id = aws_route53_zone.digital_toplevel.zone_id
+#   name    = "v1.designsystem.digital.gov."
+#   type    = "CNAME"
+#   ttl     = 120
+#   records = ["v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
+# }
+
+resource "aws_route53_record" "acme_challenge_v1_designsystem_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "components.designsystem.digital.gov."
+  name    = "_acme-challenge.v1.designsystem.digital.gov."
   type    = "CNAME"
-  ttl     = 1800
-  records = ["components.designsystem.digital.gov.external-domains-production.cloud.gov."]
+  ttl     = 120
+  records = ["_acme-challenge.v1.designsystem.digital.gov.external-domains-production.cloud.gov."]
 }
 
-# _acme-challenge.components.designsystem.digital.gov — CNAME -------------------------------
-resource "aws_route53_record" "_acme-challenge_components_designsystem_digital_gov_cname" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "_acme-challenge.components.designsystem.digital.gov."
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["_acme-challenge.components.designsystem.digital.gov.external-domains-production.cloud.gov."]
-}
+
 
 # public-sans.digital.gov — A
 resource "aws_route53_record" "public_sans_digital_gov_a" {
@@ -186,6 +418,7 @@ resource "aws_route53_record" "public_sans_digital_gov_aaaa" {
 }
 
 # accessibility.digital.gov — CNAME -------------------------------
+# (Redirects to digital.gov/guides/accessibility-for-teams via WAF)
 resource "aws_route53_record" "accessibility_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "accessibility.digital.gov."
@@ -203,6 +436,7 @@ resource "aws_route53_record" "_acme-challenge_accessibility_digital_gov_cname" 
 }
 
 # emerging.digital.gov — CNAME -------------------------------
+# (Redirects to digital.gov/topics/emerging-tech via WAF)
 resource "aws_route53_record" "emerging_digital_gov_cname" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "emerging.digital.gov."
@@ -378,18 +612,6 @@ resource "aws_route53_record" "demo_app_touchpoints_digital_gov_ses_cname_3" {
   records = ["frvj7kknqxwqaoypz5w5l54yirxtqeue.dkim.amazonses.com"]
 }
 
-# DEMO Touchpoints APP / MX Records
-# demo.app.touchpoints.digital.gov
-resource "aws_route53_record" "demo_app_touchpoints_digital_gov_mx" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "demo-app.touchpoints.digital.gov."
-  type    = "MX"
-  ttl     = "600"
-  records = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-}
-
 # Touchpoints Site / Federalist / touchpoints.digital.gov — A
 resource "aws_route53_record" "touchpoints_digital_gov_a" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
@@ -423,6 +645,154 @@ resource "aws_route53_record" "touchpoints_digital_gov_verification_txt" {
   records = [
     "r3nlrOyTmleqQm6yXXyHqEffx6FC3vtWnv9UPMhkADw="
   ]
+}
+
+# app-staging.touchpoints.digital.gov
+resource "aws_route53_record" "app_staging_touchpoints_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "app-staging.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["app-staging.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_staging_touchpoints_digital_gov__acme-challenge_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.app-staging.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.app-staging.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_staging_touchpoints_digital_gov_ses_cname_1" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "stbimes7zj4vgflonbsq6olxg6zizkaf._domainkey.app-staging.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["stbimes7zj4vgflonbsq6olxg6zizkaf.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_staging_touchpoints_digital_gov_ses_cname_2" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "cwgheubcxgxzulqmzqbwvpnrs52scxpp._domainkey.app-staging.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["cwgheubcxgxzulqmzqbwvpnrs52scxpp.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_staging_touchpoints_digital_gov_ses_cname_3" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "rvym6qcpuuxomyqroq73lpy2xqs6vbbk._domainkey.app-staging.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["rvym6qcpuuxomyqroq73lpy2xqs6vbbk.dkim.amazonses.com"]
+}
+
+# app-demo.touchpoints.digital.gov
+resource "aws_route53_record" "app_demo_touchpoints_digital_gov_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "app-demo.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["app-demo.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_demo_touchpoints_digital_gov__acme-challenge_cname" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.app-demo.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.app-demo.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_1" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "xrbz55v6evbaiet6px6gtg3udbvsslzq._domainkey.app-demo.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["xrbz55v6evbaiet6px6gtg3udbvsslzq.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_2" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "s6klsvu4cxpqdu4itpclpuecwq7ri5vy._domainkey.app-demo.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["s6klsvu4cxpqdu4itpclpuecwq7ri5vy.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_demo_touchpoints_digital_gov_ses_cname_3" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "m6d3etxkxjut3c7bfl5bmzz5biqcjxhe._domainkey.app-demo.touchpoints.digital.gov"
+  type    = "CNAME"
+  ttl     = 1800
+  records = ["m6d3etxkxjut3c7bfl5bmzz5biqcjxhe.dkim.amazonses.com"]
+}
+
+# Application endpoint for app.touchpoints.digital.gov - keep this as is
+resource "aws_route53_record" "app_touchpoints_digital_gov_cname" {
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "app.touchpoints.digital.gov."
+  type            = "CNAME"
+  ttl             = 120
+  allow_overwrite = true
+  records         = ["app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+# Add SPF record for mail subdomain
+resource "aws_route53_record" "app_touchpoints_digital_gov_spf" {
+  zone_id = aws_route53_zone.digital_toplevel.zone_id
+  name    = "_acme-challenge.app.touchpoints.digital.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.app.touchpoints.digital.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_1" {
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "qqtoqzlc5a24irzufsu4lbdpoc3mvr3n._domainkey.app.touchpoints.digital.gov"
+  type            = "CNAME"
+  ttl             = 1800
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["qqtoqzlc5a24irzufsu4lbdpoc3mvr3n.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_2" {
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "4dh5jgv5chdo2q3axkftnini7j7xkdjx._domainkey.app.touchpoints.digital.gov"
+  type            = "CNAME"
+  ttl             = 1800
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["4dh5jgv5chdo2q3axkftnini7j7xkdjx.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "app_touchpoints_digital_gov_ses_cname_3" {
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "pwa5cvp3cde3aghrojag7ketcjaeytp2._domainkey.app.touchpoints.digital.gov"
+  type            = "CNAME"
+  ttl             = 1800
+  allow_overwrite = true  # Add this to handle conflicts
+  records         = ["pwa5cvp3cde3aghrojag7ketcjaeytp2.dkim.amazonses.com"]
+}
+
+# Mail records moved to mail subdomain
+resource "aws_route53_record" "mail_touchpoints_digital_gov_mx" {
+  zone_id         = aws_route53_zone.digital_toplevel.zone_id
+  name            = "mail.touchpoints.digital.gov."  # Mail subdomain for general email
+  type            = "MX"
+  ttl             = "600"
+  allow_overwrite = true
+  records         = [
+    "10 inbound-smtp.us-east-1.amazonaws.com"
+  ]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # Touchpoints Staging APP / Amazon SES Verification TXT Record
@@ -518,18 +888,7 @@ resource "aws_route53_record" "touchpoints_digital_gov_dkim_3" {
   records = ["anyljchthsaitorr6matbfeoeyug34jh.dkim.amazonses.com"]
 }
 
-# Touchpoints APP / MX Records
-# app.touchpoints.digital.gov
-resource "aws_route53_record" "touchpoints_digital_gov_mx" {
-  zone_id = aws_route53_zone.digital_toplevel.zone_id
-  name    = "app.touchpoints.digital.gov."
-  type    = "MX"
-  ttl     = "600"
-  records = [
-    "10 inbound-smtp.us-east-1.amazonaws.com"
-  ]
-}
-
+# Touchpoints MX Records
 resource "aws_route53_record" "mail_from_touchpoints_digital_gov_mx" {
   zone_id = aws_route53_zone.digital_toplevel.zone_id
   name    = "mail.touchpoints.digital.gov"
@@ -559,15 +918,6 @@ module "digital_gov__email_security" {
     local.spf_hubspot
   ]
 }
-
-# pra.digital.gov TXT / ACME Challenge
-#resource "aws_route53_record" "pra_digital_gov__acme-challenge_txt" {
-#  zone_id = aws_route53_zone.digital_toplevel.zone_id
-#  name    = "_acme-challenge.pra.digital.gov."
-#  type    = "TXT"
-#  ttl     = 120
-#  records = ["0VxlpUbA2CXBDx1GKUlr-SujwU0ep9KvGrM0BvE6o4E"]
-#}
 
 # demo.touchpoints.digital.gov TXT / ACME Challenge
 resource "aws_route53_record" "demo_touchpoints_digital_gov__acme-challenge_txt" {
