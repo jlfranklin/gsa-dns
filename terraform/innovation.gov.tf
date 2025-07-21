@@ -1,27 +1,54 @@
 resource "aws_route53_zone" "innovation_toplevel" {
   name = "innovation.gov"
-
   tags = {
     Project = "dns"
   }
 }
 
-# Redirect apex domain to permitting.innovation.gov
+# Apex domain - alias to CloudFront distribution
 resource "aws_route53_record" "innovation_gov_apex" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
   name    = "innovation.gov."
-  type    = "CNAME"
-  ttl     = 300
-  records = ["permitting.innovation.gov."]
+  type    = "A"
+  alias {
+    name                   = "d2ntl68ywjm643.cloudfront.net" # Ensure this CloudFront distribution is configured to handle apex requests
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
 }
 
-# Redirect www subdomain to permitting.innovation.gov
+resource "aws_route53_record" "innovation_gov_apex_aaaa" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "innovation.gov."
+  type    = "AAAA"
+  alias {
+    name                   = "d2ntl68ywjm643.cloudfront.net" # Ensure this CloudFront distribution is configured to handle apex requests
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+# www subdomain - alias to CloudFront distribution
 resource "aws_route53_record" "innovation_gov_www" {
   zone_id = aws_route53_zone.innovation_toplevel.zone_id
   name    = "www.innovation.gov."
-  type    = "CNAME"
-  ttl     = 300
-  records = ["permitting.innovation.gov."]
+  type    = "A"
+  alias {
+    name                   = "d2ntl68ywjm643.cloudfront.net" # Ensure this CloudFront distribution is configured to handle www requests
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "innovation_gov_www_aaaa" {
+  zone_id = aws_route53_zone.innovation_toplevel.zone_id
+  name    = "www.innovation.gov."
+  type    = "AAAA"
+  alias {
+    name                   = "d2ntl68ywjm643.cloudfront.net"
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
 }
 
 resource "aws_route53_record" "acme_challenge_permitting_innovation_gov_cname" {
@@ -63,4 +90,5 @@ module "innovation_gov__email_security" {
 
 output "innovation_ns" {
   value = aws_route53_zone.innovation_toplevel.name_servers
+}
 }
