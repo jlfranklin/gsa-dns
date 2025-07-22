@@ -91,4 +91,3 @@ module "innovation_gov__email_security" {
 output "innovation_ns" {
   value = aws_route53_zone.innovation_toplevel.name_servers
 }
-}
