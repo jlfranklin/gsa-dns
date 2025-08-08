@@ -30,6 +30,22 @@ resource "aws_route53_record" "search_gov_apex_aaaa" {
   }
 }
 
+resource "aws_route53_record" "search_gov_acme_challenge" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "_acme-challenge.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.search.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "www_search_gov_acme_challenge" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "_acme-challenge.www.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["_acme-challenge.www.search.gov.external-domains-production.cloud.gov."]
+}
+
 # www.search.gov — redirects to search.gov through pages_redirect
 resource "aws_route53_record" "search_gov_www" {
   zone_id = aws_route53_zone.search_toplevel.zone_id
