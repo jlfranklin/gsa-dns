@@ -6,37 +6,37 @@ resource "aws_route53_zone" "search_toplevel" {
   }
 }
 
-# resource "aws_route53_record" "search_gov_apex" {
-#   zone_id = aws_route53_zone.search_toplevel.zone_id
-#   name    = "search.gov."
-#   type    = "A"
+resource "aws_route53_record" "search_gov_apex" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "search.gov."
+  type    = "A"
 
-#   alias {
-#     name                   = "dcp2c9fh8vtdl.cloudfront.net."
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
-#     evaluate_target_health = false
-#   }
-# }
+  alias {
+    name                   = "d3b0ro7nh4961l.cloudfront.net."
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
 
-# resource "aws_route53_record" "search_gov_apex_aaaa" {
-#   zone_id = aws_route53_zone.search_toplevel.zone_id
-#   name    = "search.gov."
-#   type    = "AAAA"
+resource "aws_route53_record" "search_gov_apex_aaaa" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "search.gov."
+  type    = "AAAA"
 
-#   alias {
-#     name                   = "dcp2c9fh8vtdl.cloudfront.net."
-#     zone_id                = local.cloud_gov_cloudfront_zone_id
-#     evaluate_target_health = false
-#   }
-# }
+  alias {
+    name                   = "d3b0ro7nh4961l.cloudfront.net."
+    zone_id                = local.cloud_gov_cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
 
-# resource "aws_route53_record" "search_gov_www_cname" {
-#   zone_id = aws_route53_zone.search_toplevel.zone_id
-#   name    = "www.search.gov."
-#   type    = "CNAME"
-#   ttl     = 120
-#   records = ["www.search.gov.external-domains-production.cloud.gov."]
-# }
+resource "aws_route53_record" "search_gov_www_cname" {
+  zone_id = aws_route53_zone.search_toplevel.zone_id
+  name    = "www.search.gov."
+  type    = "CNAME"
+  ttl     = 120
+  records = ["www.search.gov.external-domains-production.cloud.gov."]
+}
 
 resource "aws_route53_record" "search_gov_acme_challenge" {
   zone_id = aws_route53_zone.search_toplevel.zone_id
